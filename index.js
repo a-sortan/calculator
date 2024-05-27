@@ -1,6 +1,9 @@
-let firstNumber;
-let secondNumber;
-let operator;
+const RESET_VALUE = 'AC'
+const DISPLAY_INITIAL_VALUE = 0;
+let firstNumber = null;
+let secondNumber = null;
+let operator = null;
+let currentNumber = null;
 
 const roundedToFixed = function(input, digits){
   var rounder = Math.pow(10, digits);
@@ -40,4 +43,46 @@ const operate = function(operator, firstNumber, secondNumber) {
     default:
       return  `Oops! Operator ${operator} not defined`;
   }
+}
+
+const resetCalculator = function() {
+  firstNumber = null;
+  secondNumber = null;
+  currentNumber = null;
+  operator = null;
+}
+
+let controlElem = document.querySelector('.control');
+
+controlElem.addEventListener('click', function(e) {
+  let typedValue = e.target.getAttribute('value');
+
+  if(e.target.tagName !== 'BUTTON') return;
+
+  if(typedValue === RESET_VALUE) {
+    resetCalculator();
+    updateDisplay(DISPLAY_INITIAL_VALUE);
+    return;
+  }
+
+  let displayElem = document.querySelector('.display');
+  let displayValue = currentNumber === null ? 0 : displayElem.textContent;
+
+  if(displayValue.length === 10) {
+    displayValue = Infinity;
+    updateDisplay(displayValue);
+    resetCalculator();
+    return;
+  }
+
+  if(!Number.isNaN(+typedValue)) {
+    displayValue = +displayValue;
+    currentNumber = displayValue * 10 + +typedValue
+    displayValue = currentNumber;
+    updateDisplay(displayValue);
+  }
+});
+
+function updateDisplay(value) {
+  document.querySelector('.display').textContent = value;
 }
