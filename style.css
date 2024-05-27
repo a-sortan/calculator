@@ -13,12 +13,21 @@ h1 {
   padding: 8px;
 }
 
-.display {
+.display, .display-last {
   padding: 16px;
   text-align: right;
   font-size: 3.5rem;
-  font-weight: bold;
+  /* font-weight: bold; */
   background-color: rgb(172, 167, 177);
+  
+}
+
+.display-last {
+  border-bottom: 1px solid black;
+  height: 67px;
+}
+
+.display {
   margin-bottom: 8px;
 }
 
