@@ -5,7 +5,7 @@ let secondNumber = null;
 let operator = null;
 let currentNumber = null;
 
-const roundedToFixed = function(input, digits){
+const roundDecimal = function(input, digits){
   var rounder = Math.pow(10, digits);
   return +(Math.round(input * rounder) / rounder).toFixed(digits);
 }
@@ -19,11 +19,11 @@ const subtract = function(a, b) {
 }
 
 const multiply = function(a, b) {
-  return roundedToFixed(a * b, 10);
+  return roundDecimal(a * b, 10);
 }
 
 const divide = function(a, b) {
-  return roundedToFixed(a / b, 10);
+  return roundDecimal(a / b, 10);
 }
 
 const operate = function(operator, firstNumber, secondNumber) {
@@ -50,6 +50,10 @@ const resetCalculator = function() {
   secondNumber = null;
   currentNumber = null;
   operator = null;
+}
+
+const updateDisplay = function(value) {
+  document.querySelector('.display').textContent = value;
 }
 
 let controlElem = document.querySelector('.control');
@@ -83,6 +87,4 @@ controlElem.addEventListener('click', function(e) {
   }
 });
 
-function updateDisplay(value) {
-  document.querySelector('.display').textContent = value;
-}
+
