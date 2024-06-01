@@ -24,7 +24,9 @@ h1 {
 
 .display-last {
   border-bottom: 1px solid black;
-  height: 67px;
+  /* height: 67px; */
+  height: 52px;
+  font-size: 1rem;
 }
 
 .display {
