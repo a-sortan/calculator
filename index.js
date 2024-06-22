@@ -47,13 +47,15 @@ const operate = function(operator, firstNumber, secondNumber) {
   }
 };
 
-const resetCalculator = function() {
+const resetCalculator = function(updateDispl) {
   firstNumber = null;
   secondNumber = null;
   currentNumber = null;
   operator = null;
-  updateDisplayLast();
-  updateDisplay(0)
+  if(updateDispl) {
+    updateDisplay(0);
+    updateDisplayLast();
+  }
 };
 
 const updateDisplay = function(value) {
@@ -66,31 +68,42 @@ const updateDisplayLast = function(firstNumber, secondNumber, operator, result) 
   } else {
     document.querySelector('.display-last').textContent = "";
   }
-  
 };
 
 const isOperator = function(value) {
   return OPERATORS.includes(value);
 };
 
+const isNumber = function(value) {
+  return !Number.isNaN(+value);
+};
+
+const isLastOperation = function(operator) {
+  return operator === '=';
+}
+
 const canCalculateResult = function() {
   return firstNumber !== null && secondNumber !== null && operator !== null;
 };
 
 const handleOperator = function(typedValue) {
-  let result = null;
+  //when operator is entered it can:
+  //  - calculate result
+  //  - begin second number
 
   if(firstNumber === null) {
     firstNumber = currentNumber;
   } else {
     secondNumber = currentNumber;
   }
-  console.log('1 first',firstNumber,'operator ',operator, 'second', secondNumber,'canCalculate', canCalculateResult());
 
   if(canCalculateResult()) {
-    result = operate(operator, firstNumber, secondNumber);
+    let result = operate(operator, firstNumber, secondNumber);
+    let displayElem = document.querySelector('.display');
     if(result > 9999999999) {
       result = Infinity;
+      updateDisplay(result);
+      updateDisplayLast(firstNumber, secondNumber, operator, result);
       resetCalculator();
     } else {
       updateDisplay(result);
@@ -99,19 +112,18 @@ const handleOperator = function(typedValue) {
     }
   }
 
-  console.log('2 first',firstNumber,'operator ',operator, 'second', secondNumber);
   currentNumber = null;
   lastOperator = typedValue;
-  if(typedValue !== '=') {
+  if(!isLastOperation(typedValue)) {
     operator = typedValue;
   }
 }
 
 const handleNumber = function(typedValue) { 
   let displayElem = document.querySelector('.display');
-  let displayValue = currentNumber === null ? 0 : displayElem.textContent;
+  let displayValue = currentNumber === null ? 0 : +displayElem.textContent;
   if(lastOperator === '=') {
-    resetCalculator();
+    resetCalculator(true);
     lastOperator = null;
   }
   if(displayValue.length === 10) return;
@@ -129,21 +141,18 @@ controlElem.addEventListener('click', function(e) {
   if(e.target.tagName !== 'BUTTON') return;
 
   if(typedValue === RESET_VALUE) {
-    resetCalculator();
-    updateDisplay(DISPLAY_INITIAL_VALUE);
+    resetCalculator(true);
     return;
   }
 
-  // let displayElem = document.querySelector('.display');
-  // let displayValue = currentNumber === null ? 0 : displayElem.textContent;
-
-  if(!Number.isNaN(+typedValue)) {
-    handleNumber(typedValue)
+  if(isNumber(typedValue)) {
+    handleNumber(typedValue);
+    return;
   }
-  console.log('current',currentNumber,'typed val ',typedValue, 'isOperator',isOperator(typedValue))
- 
+
   if(isOperator(typedValue)) {
     handleOperator(typedValue);
+    return;
   }
 });
 
