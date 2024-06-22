@@ -1,6 +1,7 @@
 const RESET_VALUE = 'AC'
 const DISPLAY_INITIAL_VALUE = 0;
 const OPERATORS = ['+','-', '*','/', '='];
+const MAX_DISPLAY_LENGTH = 10;
 let firstNumber = null;
 let secondNumber = null;
 let operator = null;
@@ -87,10 +88,6 @@ const canCalculateResult = function() {
 };
 
 const handleOperator = function(typedValue) {
-  //when operator is entered it can:
-  //  - calculate result
-  //  - begin second number
-
   if(firstNumber === null) {
     firstNumber = currentNumber;
   } else {
@@ -99,8 +96,7 @@ const handleOperator = function(typedValue) {
 
   if(canCalculateResult()) {
     let result = operate(operator, firstNumber, secondNumber);
-    let displayElem = document.querySelector('.display');
-    if(result > 9999999999) {
+    if(result.toString().length > MAX_DISPLAY_LENGTH) {
       result = Infinity;
       updateDisplay(result);
       updateDisplayLast(firstNumber, secondNumber, operator, result);
@@ -126,8 +122,8 @@ const handleNumber = function(typedValue) {
     resetCalculator(true);
     lastOperator = null;
   }
-  if(displayValue.length === 10) return;
-  displayValue = +displayValue;
+  
+  if(displayValue.toString().length >= MAX_DISPLAY_LENGTH) return;
   currentNumber = displayValue * 10 + +typedValue
   displayValue = currentNumber;
   updateDisplay(displayValue);
