@@ -53,6 +53,10 @@ button {
   font-size: 1.5rem;
 }
 
+.operator {
+  background-color: rgb(82, 140, 118); 
+}
+
 #btn0 {
   flex-basis: 166px;
 }
