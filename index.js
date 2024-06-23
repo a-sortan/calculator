@@ -147,6 +147,22 @@ const handleSignButton = function() {
   updateDisplay(displayValue);
 }
 
+const handlePercentButton = function() {
+  let displayElem = document.querySelector('.display');
+  let displayValue = +displayElem.textContent;
+  
+
+  displayValue = displayValue / 100;
+
+  if(currentNumber !== null) {
+    currentNumber = displayValue;
+  } else if (firstNumber !== null) {
+    firstNumber = displayValue;
+  }
+
+  updateDisplay(displayValue);
+}
+
 let controlElem = document.querySelector('.control');
 
 controlElem.addEventListener('click', function(e) {
@@ -171,6 +187,10 @@ controlElem.addEventListener('click', function(e) {
 
   if(typedValue === '+/-') {
     handleSignButton();
+  }
+
+  if(typedValue === '%') {
+    handlePercentButton();
   }
 });
 
