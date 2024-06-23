@@ -95,7 +95,9 @@ const handleOperator = function(typedValue) {
   }
 
   if(canCalculateResult()) {
+    
     let result = operate(operator, firstNumber, secondNumber);
+    console.log('res', firstNumber, secondNumber, operator, result)
     if(result.toString().length > MAX_DISPLAY_LENGTH) {
       result = Infinity;
       updateDisplay(result);
@@ -118,11 +120,11 @@ const handleOperator = function(typedValue) {
 const handleNumber = function(typedValue) { 
   let displayElem = document.querySelector('.display');
   let displayValue = currentNumber === null ? 0 : +displayElem.textContent;
-  if(lastOperator === '=') {
+  if(isLastOperation(lastOperator)) {
     resetCalculator(true);
     lastOperator = null;
   }
-  
+
   if(displayValue.toString().length >= MAX_DISPLAY_LENGTH) return;
   currentNumber = displayValue * 10 + +typedValue
   displayValue = currentNumber;
@@ -149,6 +151,22 @@ controlElem.addEventListener('click', function(e) {
   if(isOperator(typedValue)) {
     handleOperator(typedValue);
     return;
+  }
+
+  if(typedValue === '+/-') {
+    let displayElem = document.querySelector('.display');
+    let displayValue = +displayElem.textContent;
+    let newSign =  -1 * Math.sign(displayValue);
+
+    displayValue = newSign * Math.abs(displayValue);
+
+    if(currentNumber !== null) {
+      currentNumber = displayValue;
+    } else if (firstNumber !== null) {
+      firstNumber = displayValue;
+    }
+
+    updateDisplay(displayValue);
   }
 });
 
