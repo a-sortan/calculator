@@ -57,6 +57,10 @@ button {
   background-color: rgb(82, 140, 118); 
 }
 
+.reset, .sign, .percent, .decimal {
+  background-color: rgb(197, 117, 13); 
+}
+
 #btn0 {
   flex-basis: 166px;
 }
