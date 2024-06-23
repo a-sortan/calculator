@@ -131,6 +131,22 @@ const handleNumber = function(typedValue) {
   updateDisplay(displayValue);
 }
 
+const handleSignButton = function() {
+  let displayElem = document.querySelector('.display');
+  let displayValue = +displayElem.textContent;
+  let newSign =  -1 * Math.sign(displayValue);
+
+  displayValue = newSign * Math.abs(displayValue);
+
+  if(currentNumber !== null) {
+    currentNumber = displayValue;
+  } else if (firstNumber !== null) {
+    firstNumber = displayValue;
+  }
+
+  updateDisplay(displayValue);
+}
+
 let controlElem = document.querySelector('.control');
 
 controlElem.addEventListener('click', function(e) {
@@ -154,19 +170,7 @@ controlElem.addEventListener('click', function(e) {
   }
 
   if(typedValue === '+/-') {
-    let displayElem = document.querySelector('.display');
-    let displayValue = +displayElem.textContent;
-    let newSign =  -1 * Math.sign(displayValue);
-
-    displayValue = newSign * Math.abs(displayValue);
-
-    if(currentNumber !== null) {
-      currentNumber = displayValue;
-    } else if (firstNumber !== null) {
-      firstNumber = displayValue;
-    }
-
-    updateDisplay(displayValue);
+    handleSignButton();
   }
 });
 
