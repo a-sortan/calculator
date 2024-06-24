@@ -14,11 +14,11 @@ const roundDecimal = function(input, digits) {
 }
 
 const add = function(a, b) {
-  return a + b;
+  return roundDecimal(a + b, 10);
 }
 
 const subtract = function(a, b) {
-  return a - b;
+  return roundDecimal(a - b, 10);
 }
 
 const multiply = function(a, b) {
@@ -95,9 +95,7 @@ const handleOperator = function(typedValue) {
   }
 
   if(canCalculateResult()) {
-    
     let result = operate(operator, firstNumber, secondNumber);
-    console.log('res', firstNumber, secondNumber, operator, result)
     if(result.toString().length > MAX_DISPLAY_LENGTH) {
       result = Infinity;
       updateDisplay(result);
@@ -119,6 +117,7 @@ const handleOperator = function(typedValue) {
 
 const handleNumber = function(typedValue) { 
   let displayElem = document.querySelector('.display');
+
   let displayValue = currentNumber === null ? 0 : +displayElem.textContent;
   if(isLastOperation(lastOperator)) {
     resetCalculator(true);
@@ -126,7 +125,13 @@ const handleNumber = function(typedValue) {
   }
 
   if(displayValue.toString().length >= MAX_DISPLAY_LENGTH) return;
-  currentNumber = displayValue * 10 + +typedValue
+
+  if(displayElem.textContent.toString().includes('.') && currentNumber !== null) {
+    currentNumber = Number(displayElem.textContent + typedValue);
+  } else {
+    currentNumber = displayValue * 10 + +typedValue;
+  }
+  
   displayValue = currentNumber;
   updateDisplay(displayValue);
 }
@@ -137,30 +142,36 @@ const handleSignButton = function() {
   let newSign =  -1 * Math.sign(displayValue);
 
   displayValue = newSign * Math.abs(displayValue);
-
   if(currentNumber !== null) {
     currentNumber = displayValue;
   } else if (firstNumber !== null) {
     firstNumber = displayValue;
   }
-
   updateDisplay(displayValue);
 }
 
 const handlePercentButton = function() {
   let displayElem = document.querySelector('.display');
   let displayValue = +displayElem.textContent;
-  
 
   displayValue = displayValue / 100;
-
   if(currentNumber !== null) {
     currentNumber = displayValue;
   } else if (firstNumber !== null) {
     firstNumber = displayValue;
   }
-
   updateDisplay(displayValue);
+}
+
+const handleDecimalButton = function() {
+  let displayElem = document.querySelector('.display');
+  let displayValue = +displayElem.textContent;
+  if(!displayValue.toString().includes('.')) {
+    displayValue = displayValue.toString() + '.';
+    updateDisplay(displayValue);
+  } else {
+    console.log('already has')
+  }
 }
 
 let controlElem = document.querySelector('.control');
@@ -191,6 +202,10 @@ controlElem.addEventListener('click', function(e) {
 
   if(typedValue === '%') {
     handlePercentButton();
+  }
+
+  if(typedValue === '.') {
+    handleDecimalButton();
   }
 });
 
