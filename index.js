@@ -142,7 +142,7 @@ const handleNumber = function(typedValue) {
 const handleSignButton = function() {
   let displayElem = document.querySelector('.display');
   let displayValue = +displayElem.textContent;
-  let newSign =  -1 * Math.sign(displayValue);
+  let newSign = -1 * Math.sign(displayValue);
 
   displayValue = newSign * Math.abs(displayValue);
   if(currentNumber !== null) {
@@ -157,7 +157,7 @@ const handlePercentButton = function() {
   let displayElem = document.querySelector('.display');
   let displayValue = +displayElem.textContent;
 
-  displayValue = displayValue / 100;
+  displayValue = operate('/', displayValue, 100);
   if(currentNumber !== null) {
     currentNumber = displayValue;
   } else if (firstNumber !== null) {
