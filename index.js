@@ -10,7 +10,10 @@ let lastOperator = null;
 
 const roundDecimal = function(input, digits) {
   var rounder = Math.pow(10, digits);
-  return +(Math.round(input * rounder) / rounder).toFixed(digits);
+  let result = Math.round(input * rounder) / rounder;
+  let decimalPos = result.toString().indexOf('.');
+  let numDigits = decimalPos > -1 ? digits - decimalPos - 1 : digits;
+  return +result.toFixed(numDigits);
 }
 
 const add = function(a, b) {
