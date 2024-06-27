@@ -177,13 +177,7 @@ const handleDecimalButton = function() {
   }
 }
 
-let controlElem = document.querySelector('.control');
-
-controlElem.addEventListener('click', function(e) {
-  let typedValue = e.target.getAttribute('value');
-
-  if(e.target.tagName !== 'BUTTON') return;
-
+const dispatchValue = function(typedValue) {
   if(typedValue === RESET_VALUE) {
     resetCalculator(true);
     return;
@@ -210,6 +204,22 @@ controlElem.addEventListener('click', function(e) {
   if(typedValue === '.') {
     handleDecimalButton();
   }
+}
+
+let controlElem = document.querySelector('.control');
+
+controlElem.addEventListener('click', function(e) {
+  let typedValue = e.target.getAttribute('value');
+
+  if(e.target.tagName !== 'BUTTON') return;
+  dispatchValue(typedValue);
+  
 });
 
-
+document.addEventListener('keypress', function(e) {
+  if(e.key === 'Enter') {
+    dispatchValue('=');
+  } else {
+    dispatchValue(e.key);
+  }
+})
