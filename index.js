@@ -69,6 +69,8 @@ const updateDisplay = function(value) {
 const updateDisplayLast = function(firstNumber, secondNumber, operator, result) {
   if(firstNumber != null && secondNumber != null && operator != null && result != null) {
     document.querySelector('.display-last').textContent = `${firstNumber} ${operator} ${secondNumber} = ${result}`;
+  } else if (firstNumber != null && operator != null) {
+    document.querySelector('.display-last').textContent = `${firstNumber} ${operator}`;
   } else {
     document.querySelector('.display-last').textContent = "";
   }
@@ -93,6 +95,7 @@ const canCalculateResult = function() {
 const handleOperator = function(typedValue) {
   if(firstNumber === null) {
     firstNumber = currentNumber;
+    updateDisplayLast(firstNumber, null, typedValue);
   } else {
     secondNumber = currentNumber;
   }
